@@ -16,20 +16,42 @@ struct ContentView: View {
     
     @StateObject private var compassManager = CompassManager()
     
+    @State private var moveRight = false
+    
     var body: some View {
         VStack {
             if let _ = compassManager.currentLocation {
-                // Rotate the arrow based on the bearing angle towards the target location
-                Image(systemName: "arrow.up.circle.fill")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .rotationEffect(Angle(degrees: compassManager.rotationAngle))  // Rotate based on bearing
-                    .foregroundColor(.blue)
                 
-                Text("Magnetic Heading: \(compassManager.heading?.magneticHeading ?? 0.0, specifier: "%.1f")°")
-                    .font(.title2)
-                Text("Angle to Target: \(compassManager.rotationAngle, specifier: "%.1f")°")
-                             .font(.title2)
+                Rectangle()
+                    .fill(Color.brown.opacity(0.8))
+                    .frame(width: 300, height: 300)
+                    .cornerRadius(2)
+                    .offset(x: moveRight ? 10 : 0,
+                            y: moveRight ? -10 : 0)
+                
+                    //.offset(x: moveRight ? compassManager.rotationAngle : 0,
+                    //        y: moveRight ?
+                    //        CGFloat(compassManager.heading?.magneticHeading ?? 0.0) : 0)
+                
+                    .animation(
+                        Animation.easeInOut(duration: 1).repeatForever(autoreverses: true),
+                        value: moveRight
+                    )
+                    .onAppear {
+                        moveRight.toggle() // Start the animation when the view appears
+                    }
+                
+                // Rotate the arrow based on the bearing angle towards the target location
+//                Image(systemName: "arrow.up.circle.fill")
+//                    .resizable()
+//                    .frame(width: 100, height: 100)
+//                    .rotationEffect(Angle(degrees: compassManager.rotationAngle))  // Rotate based on bearing
+//                    .foregroundColor(.blue)
+//                
+//                Text("Magnetic Heading: \(compassManager.heading?.magneticHeading ?? 0.0, specifier: "%.1f")°")
+//                    .font(.title2)
+//                Text("Angle to Target: \(compassManager.rotationAngle, specifier: "%.1f")°")
+//                             .font(.title2)
             } else {
                 Text("Fetching location...")
             }
