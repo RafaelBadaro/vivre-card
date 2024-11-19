@@ -19,7 +19,7 @@ class CompassManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var xAxisDirection: Double = 0.0
     @Published var yAxisDirection: Double = 0.0
     
-    private var targetLocation: CLLocation
+    private(set) var targetLocation: CLLocation
     //CLLocation(latitude: 37.7749, longitude: -122.4194) // san francisco
     //CLLocation(latitude: -23.626578, longitude: -46.659628)  // aeroporto congonhas
     //CLLocation(latitude: -19.955136, longitude: -43.952228) // Xus home

@@ -47,6 +47,10 @@ struct VivreCardView: View {
                             .font(.title2)
                         Text("Angle to Target: \(compassManager.rotationAngle, specifier: "%.1f")°")
                             .font(.title2)
+                        Text("Latitude: \(self.compassManager.targetLocation.coordinate.latitude)")
+                            .font(.title2)
+                        Text("Longitude: \(self.compassManager.targetLocation.coordinate.longitude)")
+                            .font(.title2)
                     }.padding(.top, 50)
                 }
             

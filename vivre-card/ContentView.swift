@@ -13,15 +13,17 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var vivreCards: [VivreCard]
     
+    @State private var showAddVivreCardSheet = false
+    
     //    VivreCardView(targetLatitude: -23.626578, targetLongitude: -46.659628)
     
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
             List {
                 ForEach(vivreCards) { vivreCard in
                     NavigationLink {
                         VivreCardView(targetLatitude: vivreCard.latitude,
-                                      targetLongitude: vivreCard.latitude)
+                                      targetLongitude: vivreCard.longitude)
                         .navigationTitle(vivreCard.name)
                     } label: {
                         Text(vivreCard.name)
@@ -34,27 +36,20 @@ struct ContentView: View {
                     EditButton()
                 }
                 ToolbarItem {
-                    Button(action: addItem) {
+                    Button {
+                        showAddVivreCardSheet.toggle()
+                    } label: {
                         Label("Add Item", systemImage: "plus")
+                    }
+                    .sheet(isPresented: $showAddVivreCardSheet){
+                        AddVivreCardView()
                     }
                 }
             }
-        } detail: {
-            Text("Select an item")
         }
+        .navigationTitle("Vivre Cards")
     }
-    
-    private func addItem() {
-        withAnimation {
-            let newItem = VivreCard(name: "San francisco",
-                               latitude: 37.7749,
-                               longitude: -122.4194,
-                               createdAt: Date(),
-                               editedAt: Date())
-            modelContext.insert(newItem)
-        }
-    }
-    
+        
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
