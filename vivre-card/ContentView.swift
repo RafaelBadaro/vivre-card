@@ -11,96 +11,60 @@ import MapKit
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var vivreCards: [VivreCard]
     
-    
-    @StateObject private var compassManager = CompassManager()
-    
-    @State private var moveRight = false
+    //    VivreCardView(targetLatitude: -23.626578, targetLongitude: -46.659628)
     
     var body: some View {
-        VStack {
-            if let _ = compassManager.currentLocation {
-                
-                Rectangle()
-                    .fill(Color.brown.opacity(0.8))
-                    .frame(width: 300, height: 300)
-                    .cornerRadius(2)
-                    .offset(x: moveRight ? 10 : 0,
-                            y: moveRight ? -10 : 0)
-                
-                    //.offset(x: moveRight ? compassManager.rotationAngle : 0,
-                    //        y: moveRight ?
-                    //        CGFloat(compassManager.heading?.magneticHeading ?? 0.0) : 0)
-                
-                    .animation(
-                        Animation.easeInOut(duration: 1).repeatForever(autoreverses: true),
-                        value: moveRight
-                    )
-                    .onAppear {
-                        moveRight.toggle() // Start the animation when the view appears
+        NavigationSplitView {
+            List {
+                ForEach(vivreCards) { vivreCard in
+                    NavigationLink {
+                        VivreCardView(targetLatitude: vivreCard.latitude,
+                                      targetLongitude: vivreCard.latitude)
+                        .navigationTitle(vivreCard.name)
+                    } label: {
+                        Text(vivreCard.name)
                     }
-                
-                // Rotate the arrow based on the bearing angle towards the target location
-//                Image(systemName: "arrow.up.circle.fill")
-//                    .resizable()
-//                    .frame(width: 100, height: 100)
-//                    .rotationEffect(Angle(degrees: compassManager.rotationAngle))  // Rotate based on bearing
-//                    .foregroundColor(.blue)
-//                
-//                Text("Magnetic Heading: \(compassManager.heading?.magneticHeading ?? 0.0, specifier: "%.1f")°")
-//                    .font(.title2)
-//                Text("Angle to Target: \(compassManager.rotationAngle, specifier: "%.1f")°")
-//                             .font(.title2)
-            } else {
-                Text("Fetching location...")
+                }
+                .onDelete(perform: deleteItems)
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    EditButton()
+                }
+                ToolbarItem {
+                    Button(action: addItem) {
+                        Label("Add Item", systemImage: "plus")
+                    }
+                }
+            }
+        } detail: {
+            Text("Select an item")
         }
     }
     
-    //        NavigationSplitView {
-    //            List {
-    //                ForEach(items) { item in
-    //                    NavigationLink {
-    //                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-    //                    } label: {
-    //                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-    //                    }
-    //                }
-    //                .onDelete(perform: deleteItems)
-    //            }
-    //            .toolbar {
-    //                ToolbarItem(placement: .navigationBarTrailing) {
-    //                    EditButton()
-    //                }
-    //                ToolbarItem {
-    //                    Button(action: addItem) {
-    //                        Label("Add Item", systemImage: "plus")
-    //                    }
-    //                }
-    //            }
-    //        } detail: {
-    //            Text("Select an item")
-    //        }
+    private func addItem() {
+        withAnimation {
+            let newItem = VivreCard(name: "San francisco",
+                               latitude: 37.7749,
+                               longitude: -122.4194,
+                               createdAt: Date(),
+                               editedAt: Date())
+            modelContext.insert(newItem)
+        }
+    }
+    
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                modelContext.delete(vivreCards[index])
+            }
+        }
+    }
 }
-
-//    private func addItem() {
-//        withAnimation {
-//            let newItem = Item(timestamp: Date())
-//            modelContext.insert(newItem)
-//        }
-//    }
-//
-//    private func deleteItems(offsets: IndexSet) {
-//        withAnimation {
-//            for index in offsets {
-//                modelContext.delete(items[index])
-//            }
-//        }
-//    }
-// }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: VivreCard.self, inMemory: true)
 }

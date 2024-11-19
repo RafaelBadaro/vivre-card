@@ -16,14 +16,16 @@ class CompassManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var currentLocation: CLLocation?
     @Published var heading: CLHeading?
     
-
-    private var targetLocation = CLLocation(latitude: -23.626578, longitude: -46.659628)
+    @Published var xAxisDirection: Double = 0.0
+    @Published var yAxisDirection: Double = 0.0
+    
+    private var targetLocation: CLLocation
+    //CLLocation(latitude: 37.7749, longitude: -122.4194) // san francisco
     //CLLocation(latitude: -23.626578, longitude: -46.659628)  // aeroporto congonhas
-    //CLLocation(latitude: 37.7749, longitude: -122.4194) // Sao francisco
     //CLLocation(latitude: -19.955136, longitude: -43.952228) // Xus home
     
-    
-    override init() {
+    init(targetLatitude: Double, targetLongitude: Double) {
+        self.targetLocation = CLLocation(latitude: targetLatitude, longitude: targetLongitude)
         super.init()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -39,18 +41,25 @@ class CompassManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         
         let angle = bearing - heading.magneticHeading
         
-        
         // Calculate the angle to rotate by combining the heading and bearing
         rotationAngle = (angle + 360).truncatingRemainder(dividingBy: 360)
+        
+        let radians = (90 - rotationAngle) * (.pi / 180.0)  // Convert to radians and adjust for trigonometric angle
+        
+        // Set the directions of X and Y offset
+        // I multiplied by 25 and round it up because the values were too low and broken
+        // And the animation I want worked best with 25 which is a slow paced move
+        xAxisDirection = (25 * cos(radians)).rounded()
+        yAxisDirection = (-(25 * sin(radians))).rounded()
     }
     
-    // CLLocationManagerDelegate method for location updates
+    // CLLocationManagerDelegate method for location xupdates
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let newLocation = locations.first {
             currentLocation = newLocation
         }
     }
-
+    
     // CLLocationManagerDelegate method for heading updates
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         // Update the rotation angle each time the heading changes
@@ -75,5 +84,3 @@ extension CLLocation {
         return (bearing + 360).truncatingRemainder(dividingBy: 360)  // Normalize to 0-360 degrees
     }
 }
-
-
