@@ -1,20 +1,20 @@
 //
-//  AddVivreCardView.swift
+//  EditVivreCardView.swift
 //  vivre-card
 //
-//  Created by Rafael Badaró on 18/11/24.
+//  Created by Rafael Badaró on 19/11/24.
 //
 
 import SwiftUI
 
-struct AddVivreCardView: View {
-    @Environment(\.modelContext) private var modelContext
+struct EditVivreCardView: View {
     @Environment(\.dismiss) private var dismiss
+    let vivreCard: VivreCard
     
     @State private var name: String = ""
     @State private var latitude: Double = 0.0
     @State private var longitude: Double = 0.0
-        
+    
     private var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -23,15 +23,28 @@ struct AddVivreCardView: View {
         return formatter
     }
     
-    var isBtnSaveDisabled: Bool {
-        return name.isEmpty || latitude.isNaN || longitude.isNaN
+    init(vivreCard: VivreCard) {
+        self.vivreCard = vivreCard
     }
-    // TODO: fazer o dismiss do keyboard no click ou scroll na tela (add isso na edit view)
+    
+    var isBtnUpdateDisabled: Bool {
+        name.isEmpty
+        || latitude.isNaN
+        || longitude.isNaN
+        || areFieldsEqual
+    }
+    
+    var areFieldsEqual: Bool {
+        name == vivreCard.name
+        && latitude == vivreCard.latitude
+        && longitude == vivreCard.longitude
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
                 
-                Text("Fill Vivre Card info")
+                Text("Edit Vivre Card info")
                     .font(.largeTitle)
                     .bold()
                 
@@ -73,8 +86,7 @@ struct AddVivreCardView: View {
                     )
                 }.padding()
                 
-                //TODO: criar opcoes aqui: manually add, atraves de um link, etc
-                Button (action: addItem) {
+                Button (action: saveItem) {
                     Text("Save")
                         .bold()
                         .padding()
@@ -82,7 +94,7 @@ struct AddVivreCardView: View {
                 }
                 .padding()
                 .buttonStyle(.borderedProminent)
-                .disabled(isBtnSaveDisabled)
+                .disabled(isBtnUpdateDisabled)
             }
             .padding()
             .toolbar {
@@ -93,22 +105,24 @@ struct AddVivreCardView: View {
                 }
             }
         }
+        .onAppear() {
+            self.name = vivreCard.name
+            self.latitude = vivreCard.latitude
+            self.longitude = vivreCard.longitude
+        }
     }
     
-    private func addItem() {
+    private func saveItem() {
         withAnimation {
-            let newItem = VivreCard(name: self.name,
-                                    latitude: self.latitude,
-                                    longitude: self.longitude,
-                                    createdAt: Date(),
-                                    updatedAt: Date())
-            modelContext.insert(newItem)
+            vivreCard.name = self.name
+            vivreCard.latitude = self.latitude
+            vivreCard.longitude = self.longitude
             dismiss()
         }
     }
     
 }
 
-#Preview {
-    AddVivreCardView()
-}
+//#Preview {
+//    EditVivreCardView()
+//}

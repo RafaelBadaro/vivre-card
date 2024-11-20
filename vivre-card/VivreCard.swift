@@ -14,13 +14,17 @@ final class VivreCard {
     var latitude: Double
     var longitude: Double
     var createdAt: Date
-    var editedAt: Date
+    var updatedAt: Date
     
-    init(name: String, latitude: Double, longitude: Double, createdAt: Date, editedAt: Date) {
+    init(name: String,
+         latitude: Double,
+         longitude: Double,
+         createdAt: Date,
+         updatedAt: Date) {
         self.name = name
         self.latitude = latitude
         self.longitude = longitude
         self.createdAt = createdAt
-        self.editedAt = editedAt
+        self.updatedAt = updatedAt
     }
 }

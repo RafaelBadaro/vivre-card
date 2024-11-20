@@ -15,7 +15,7 @@ struct ContentView: View {
     
     @State private var showAddVivreCardSheet = false
     
-    //    VivreCardView(targetLatitude: -23.626578, targetLongitude: -46.659628)
+    //VivreCardView(targetLatitude: 37.7749, targetLongitude: -122.419)
     
     var body: some View {
         NavigationStack {
@@ -46,8 +46,8 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationTitle("Vivre Cards")
         }
-        .navigationTitle("Vivre Cards")
     }
         
     private func deleteItems(offsets: IndexSet) {
