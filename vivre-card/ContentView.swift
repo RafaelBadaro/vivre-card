@@ -13,17 +13,15 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var vivreCards: [VivreCard]
     
-    @State private var showAddVivreCardSheet = false
+    @State private var showVivreCardEditor = false
     
     //VivreCardView(targetLatitude: 37.7749, targetLongitude: -122.419)
-    
     var body: some View {
         NavigationStack {
             List {
                 ForEach(vivreCards) { vivreCard in
                     NavigationLink {
-                        VivreCardView(targetLatitude: vivreCard.latitude,
-                                      targetLongitude: vivreCard.longitude)
+                        VivreCardView(vivreCard: vivreCard)
                         .navigationTitle(vivreCard.name)
                     } label: {
                         Text(vivreCard.name)
@@ -32,24 +30,21 @@ struct ContentView: View {
                 .onDelete(perform: deleteItems)
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
                 ToolbarItem {
                     Button {
-                        showAddVivreCardSheet.toggle()
+                        showVivreCardEditor.toggle()
                     } label: {
                         Label("Add Item", systemImage: "plus")
                     }
-                    .sheet(isPresented: $showAddVivreCardSheet){
-                        AddVivreCardView()
+                    .sheet(isPresented: $showVivreCardEditor){
+                        VivreCardEditor(vivreCard: nil)
                     }
                 }
             }
             .navigationTitle("Vivre Cards")
-        }
     }
-        
+}
+
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {

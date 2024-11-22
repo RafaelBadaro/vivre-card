@@ -19,8 +19,8 @@ final class VivreCard {
     init(name: String,
          latitude: Double,
          longitude: Double,
-         createdAt: Date,
-         updatedAt: Date) {
+         createdAt: Date = Date(),
+         updatedAt: Date = Date()) {
         self.name = name
         self.latitude = latitude
         self.longitude = longitude

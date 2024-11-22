@@ -33,6 +33,12 @@ class CompassManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.startUpdatingHeading()
     }
     
+    func updateTargetLocation(newLatitude: Double, newLongitude: Double) {
+        self.targetLocation = CLLocation(latitude: newLatitude, longitude: newLongitude)
+        locationManager.startUpdatingLocation()
+        locationManager.startUpdatingHeading()
+    }
+    
     private func updateRotationAngle(with heading: CLHeading) {
         guard let currentLocation = currentLocation else { return }
         

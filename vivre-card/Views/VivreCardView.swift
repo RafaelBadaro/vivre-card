@@ -9,9 +9,11 @@ import SwiftUI
 
 struct VivreCardView: View {
     @StateObject private var compassManager: CompassManager
+    @State private var vivreCard: VivreCard
     
-    init(targetLatitude: Double, targetLongitude: Double) {
-        _compassManager = StateObject(wrappedValue: CompassManager(targetLatitude: targetLatitude, targetLongitude: targetLongitude))
+    init(vivreCard: VivreCard) {
+        self._vivreCard = State(initialValue: vivreCard)
+        _compassManager = StateObject(wrappedValue: CompassManager(targetLatitude: vivreCard.latitude, targetLongitude: vivreCard.longitude))
     }
     
     @State private var isAnimating = false
@@ -20,6 +22,9 @@ struct VivreCardView: View {
     
     @State private var showCompass = false
     @State private var showCompassText = "Show info"
+    
+    @State private var isEditing = false
+    @State private var refreshTrigger = false
     
     var body: some View {
         VStack {
@@ -53,12 +58,18 @@ struct VivreCardView: View {
                             .font(.title2)
                     }.padding(.top, 50)
                 }
-            
+                
             } else {
                 Text("Fetching location...")
             }
         }
         .toolbar {
+            ToolbarItem {
+                Button { isEditing = true } label: {
+                    Label("Edit \(vivreCard.name)", systemImage: "pencil")
+                        .help("Edit the animal")
+                }
+            }
             ToolbarItem {
                 Button(showCompassText) {
                     if showCompassText == "Show info" {
@@ -69,6 +80,13 @@ struct VivreCardView: View {
                     showCompass.toggle()
                 }
             }
+        }
+        .sheet(isPresented: $isEditing) {
+            VivreCardEditor(vivreCard: vivreCard)
+                .onDisappear {
+                    compassManager.updateTargetLocation(newLatitude: vivreCard.latitude,
+                                                        newLongitude: vivreCard.longitude)
+                }
         }
     }
     
@@ -94,6 +112,8 @@ struct VivreCardView: View {
 }
 
 #Preview {
-    VivreCardView(targetLatitude: 37.7749,
-                  targetLongitude: -122.4194)
+    VivreCardView(vivreCard: VivreCard(name: "Test",
+                                       latitude: 37.7749,
+                                       longitude: -122.4194)
+    )
 }

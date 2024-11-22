@@ -14,8 +14,7 @@
 		53A48D4A2CDECDB000801739 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53A48D492CDECDB000801739 /* Assets.xcassets */; };
 		53A48D4D2CDECDB000801739 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53A48D4C2CDECDB000801739 /* Preview Assets.xcassets */; };
 		53B45C7B2CEC136100335D1A /* VivreCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B45C7A2CEC136100335D1A /* VivreCardView.swift */; };
-		53B45C7D2CEC1EEE00335D1A /* AddVivreCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B45C7C2CEC1EEE00335D1A /* AddVivreCardView.swift */; };
-		53B45C7F2CED77D800335D1A /* EditVivreCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B45C7E2CED77D800335D1A /* EditVivreCardView.swift */; };
+		53B45C7D2CEC1EEE00335D1A /* VivreCardEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B45C7C2CEC1EEE00335D1A /* VivreCardEditor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +26,7 @@
 		53A48D492CDECDB000801739 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		53A48D4C2CDECDB000801739 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		53B45C7A2CEC136100335D1A /* VivreCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VivreCardView.swift; sourceTree = "<group>"; };
-		53B45C7C2CEC1EEE00335D1A /* AddVivreCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVivreCardView.swift; sourceTree = "<group>"; };
-		53B45C7E2CED77D800335D1A /* EditVivreCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVivreCardView.swift; sourceTree = "<group>"; };
+		53B45C7C2CEC1EEE00335D1A /* VivreCardEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VivreCardEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,15 +59,12 @@
 		53A48D422CDECDAF00801739 /* vivre-card */ = {
 			isa = PBXGroup;
 			children = (
-				53A48D432CDECDAF00801739 /* vivre_cardApp.swift */,
-				53A48D452CDECDAF00801739 /* ContentView.swift */,
-				53A48D472CDECDAF00801739 /* VivreCard.swift */,
 				53A48D492CDECDB000801739 /* Assets.xcassets */,
 				53A48D4B2CDECDB000801739 /* Preview Content */,
-				532DD1022CE2C4540069EA3E /* CompassManager.swift */,
-				53B45C7A2CEC136100335D1A /* VivreCardView.swift */,
-				53B45C7C2CEC1EEE00335D1A /* AddVivreCardView.swift */,
-				53B45C7E2CED77D800335D1A /* EditVivreCardView.swift */,
+				53B45C812CF020D000335D1A /* Views */,
+				53B45C802CF020BC00335D1A /* Models */,
+				53A48D432CDECDAF00801739 /* vivre_cardApp.swift */,
+				53A48D452CDECDAF00801739 /* ContentView.swift */,
 			);
 			path = "vivre-card";
 			sourceTree = "<group>";
@@ -80,6 +75,24 @@
 				53A48D4C2CDECDB000801739 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		53B45C802CF020BC00335D1A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				53A48D472CDECDAF00801739 /* VivreCard.swift */,
+				532DD1022CE2C4540069EA3E /* CompassManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		53B45C812CF020D000335D1A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				53B45C7A2CEC136100335D1A /* VivreCardView.swift */,
+				53B45C7C2CEC1EEE00335D1A /* VivreCardEditor.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,11 +165,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53B45C7F2CED77D800335D1A /* EditVivreCardView.swift in Sources */,
 				532DD1032CE2C4540069EA3E /* CompassManager.swift in Sources */,
 				53B45C7B2CEC136100335D1A /* VivreCardView.swift in Sources */,
 				53A48D462CDECDAF00801739 /* ContentView.swift in Sources */,
-				53B45C7D2CEC1EEE00335D1A /* AddVivreCardView.swift in Sources */,
+				53B45C7D2CEC1EEE00335D1A /* VivreCardEditor.swift in Sources */,
 				53A48D482CDECDAF00801739 /* VivreCard.swift in Sources */,
 				53A48D442CDECDAF00801739 /* vivre_cardApp.swift in Sources */,
 			);
